@@ -9,7 +9,7 @@ import { ISocketMessage } from '../models/ws.model';
 export class SocketService {
     socket: WebSocket | null = null;
     BASE_URL = `${env.production ? 'wss' : 'ws'}://${env.domain}:${
-        env.port
+        env.production ? '' : `${env.port}`
     }/ws`;
 
     // Subject that notifies when socket is closed
