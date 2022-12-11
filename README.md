@@ -1,6 +1,6 @@
-# IncognitoChatFront
+# RoomsFront
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.0.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.2.
 
 ## Development server
 

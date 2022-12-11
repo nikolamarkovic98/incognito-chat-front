@@ -1,0 +1,6 @@
+<div *ngIf="chatService.selectedMessage" class="likes-list">
+    <h2>Likes</h2>
+    <div class="likes">
+        <p *ngFor="let user of chatService.selectedMessage.likes">{{ user }}</p>
+    </div>
+</div>

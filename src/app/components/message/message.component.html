@@ -1,0 +1,21 @@
+<div
+    class="message flex flex-a-c flex-j-f-e"
+    [ngClass]="{ other: chatService.username !== model.sentBy }"
+    (dblclick)="handleLike()"
+>
+    <div
+        class="message-wrapper"
+        [ngClass]="{ other: chatService.username !== model.sentBy }"
+    >
+        <h5 class="sent-by">{{ model.sentBy }}:</h5>
+        <h4 *ngIf="model.type == 'text'" class="text">{{ model.text }}</h4>
+        <img
+            class="img"
+            alt="Unknown URL"
+            *ngIf="model.type == 'img'"
+            [src]="model.file"
+            (click)="showImage()"
+        />
+    </div>
+    <div *ngIf="model.likes.length" (click)="showLikes()" class="likes"></div>
+</div>

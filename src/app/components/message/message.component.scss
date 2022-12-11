@@ -1,0 +1,80 @@
+@import "../../../styles/variables";
+
+.message {
+    position: relative;
+    text-align: right;
+    margin-bottom: $spacer-1;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20%);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .sent-by,
+    .text {
+        margin: 0;
+        word-break: break-all;
+    }
+
+    .sent-by {
+        font-size: 0.77rem;
+    }
+    .text {
+        font-size: 0.9rem;
+    }
+
+    &.other {
+        justify-content: flex-start;
+
+        .sent-by,
+        .text {
+            text-align: left;
+        }
+    }
+
+    &:last-child {
+        margin-bottom: $spacer-2;
+    }
+
+    .message-wrapper {
+        display: inline-block;
+        padding: $spacer-1 $spacer-4;
+        background-color: $color-dark;
+        border: 1px solid $color-gray;
+        border-radius: 16px;
+
+        .sent-by {
+            color: rgba($color-light, 0.8);
+        }
+
+        &.other {
+            background-color: $color-secondary;
+        }
+    }
+
+    .likes {
+        position: absolute;
+        z-index: 10;
+        bottom: -$spacer-1;
+        display: inline-block;
+        width: 1rem;
+        aspect-ratio: 1;
+        border-image: radial-gradient($color-danger 69%, #0000 70%) 84.5%
+            fill/100%;
+        clip-path: polygon(-41% 0, 50% 91%, 141% 0);
+        cursor: pointer;
+    }
+
+    img {
+        max-width: 200px;
+    }
+}

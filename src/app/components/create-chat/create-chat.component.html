@@ -1,0 +1,26 @@
+<div class="create-chat wrapper">
+    <div class="form-group">
+        <h3>Enter name of chat</h3>
+        <input
+            type="text"
+            placeholder="Chat Name"
+            (keyup.enter)="enterChat()"
+            [(ngModel)]="chatName"
+        />
+    </div>
+    <div class="form-group">
+        <h3>Chat duration (min 10, max 60 minutes)</h3>
+        <input
+            type="number"
+            min="10"
+            max="60"
+            step="5"
+            (keyup.enter)="enterChat()"
+            [(ngModel)]="chatDuration"
+        />
+    </div>
+    <div class="buttons-wrapper">
+        <button class="primary" (click)="enterChat()">Create Chat</button>
+    </div>
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+</div>

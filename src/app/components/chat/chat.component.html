@@ -1,0 +1,84 @@
+<div class="chat">
+    <header class="flex flex-a-c flex-j-s-b">
+        <div class="flex flex-a-c">
+            <mat-icon
+                (click)="router.navigate(['/'])"
+                fontIcon="arrow_back"
+                aria-hidden="false"
+                aria-label="Example home icon"
+            ></mat-icon>
+            <div>{{ chatService.chat.name }}</div>
+        </div>
+        <div>
+            Time left: <span>{{ timeLeft }}</span>
+        </div>
+    </header>
+    <main #mainRef>
+        <div class="messages" #chatRef>
+            <app-message
+                *ngFor="let message of chatService.chat.messages"
+                [id]="message.id"
+                [type]="message.type"
+                [text]="message.text"
+                [file]="message.file"
+                [sentBy]="message.sentBy"
+                [sentAt]="message.sentAt"
+                [likes]="message.likes"
+                w
+            ></app-message>
+        </div>
+    </main>
+    <footer class="flex flex-a-c">
+        <input
+            #text
+            class="color-light"
+            id="message-text-input"
+            placeholder="Message..."
+            [(ngModel)]="chatService.text"
+            (keyup.enter)="sendMessage()"
+        />
+        <div
+            [ngStyle]="{ 'max-width': chatService.text ? '0px' : '56px' }"
+            class="icons flex flex-a-c"
+        >
+            <input
+                #file
+                type="file"
+                accept=".png, .jpg, .jpeg"
+                name="image"
+                class="file"
+                (input)="imageSelected()"
+            />
+            <mat-icon class="image" (click)="file.click()">image</mat-icon>
+            <mat-icon class="like" (click)="sendHeart()"
+                >favorite_border</mat-icon
+            >
+        </div>
+        <div
+            class="send-message"
+            (click)="sendMessage()"
+            [ngClass]="{ disabled: !chatService.text }"
+        >
+            send
+        </div>
+    </footer>
+    <app-modalbox
+        *ngIf="chatService.likesModalBox"
+        (closeModalBox)="chatService.toggleLikesModalBox()"
+    >
+        <app-likes-list></app-likes-list>
+    </app-modalbox>
+    <app-modalbox
+        *ngIf="chatService.imageModalBox"
+        [classes]="['image']"
+        [exitButton]="false"
+        (closeModalBox)="chatService.toggleImageModalBox()"
+    >
+        <img
+            class="img"
+            alt="Unknown URL"
+            [src]="chatService.selectedMessage.file"
+            (click)="chatService.toggleImageModalBox()"
+        />
+    </app-modalbox>
+</div>

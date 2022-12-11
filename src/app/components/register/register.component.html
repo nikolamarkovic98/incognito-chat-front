@@ -1,0 +1,15 @@
+<div class="wrapper">
+    <div class="form-group">
+        <h3>Enter username:</h3>
+        <input
+            type="text"
+            placeholder="Username"
+            (keyup.enter)="enterChat()"
+            [(ngModel)]="chatService.username"
+        />
+    </div>
+    <div class="buttons-wrapper">
+        <button class="primary" (click)="enterChat()">Enter Chat</button>
+    </div>
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+</div>

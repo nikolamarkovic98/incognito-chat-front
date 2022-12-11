@@ -1,0 +1,16 @@
+@import "../styles/variables";
+
+.app-wrapper {
+    width: 100vw;
+    height: 100vh;
+    margin: auto;
+
+    @media (min-width: 768px) {
+        max-width: 1024px;
+        max-height: 80vh;
+        width: 80vw;
+        height: 80vh;
+        border: 1px solid rgba($color-light, 0.2);
+        box-shadow: 0px 0px 32px rgba($color-light, 0.6);
+    }
+}

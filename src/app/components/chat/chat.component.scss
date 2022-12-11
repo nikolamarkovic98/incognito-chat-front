@@ -1,0 +1,133 @@
+@import "../../../styles/variables";
+
+.chat {
+    position: relative;
+    height: 100%;
+
+    header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 40px;
+        margin-bottom: $spacer-1;
+        padding: $spacer-1 $spacer-2;
+        border-bottom: 1px solid $color-gray;
+        z-index: 10;
+        background-color: $color-primary;
+
+        .mat-icon {
+            margin-right: $spacer-2;
+            cursor: pointer;
+        }
+
+        span {
+            color: rgba($color-light, .4);
+        }
+    }
+
+    main {
+        position: fixed;
+        top: 40px;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: $color-primary;
+        margin-bottom: 72px;
+        padding-bottom: 72px;
+        padding-left: $spacer-2;
+        padding-right: $spacer-2;
+        
+        &::-webkit-scrollbar {
+                width: 4px;
+                background-color: $color-primary;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: $color-gray;
+        }
+
+        .messages {
+            padding: $spacer-2 0;
+        }
+    }
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        background-color: $color-primary;
+        padding: $spacer-1;
+
+        #message-text-input {
+            flex: 1;
+            padding: $spacer-2;
+            background-color: $color-primary;
+            border: 1px solid $color-gray;
+            border-radius: $spacer-6 * 2;
+            transition: all 1s;
+
+            &::placeholder {
+                color: $color-gray;
+            }
+        }
+
+        .icons {
+            padding-left: $spacer-2;
+            transition: all .5s;
+
+            .file {
+                display: none;
+            }
+
+            .image, .like {
+                cursor: pointer;
+            }
+        }
+
+        .send-message {
+            padding: 0 $spacer-4 0 $spacer-2;
+            color: $color-light;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+
+            &.disabled {
+                color: $color-gray;
+                cursor: default;
+            }
+        }
+    }
+}
+
+@media (min-width: $bp-md) {
+    .chat {
+        display: flex;
+        flex-direction: column;
+        max-height: 80vh;
+
+        header {
+            position: static;
+        }
+        
+        main {
+            position: static;
+            margin-bottom: 0;
+            padding-bottom: 0;
+
+            .messages {
+                padding: 0;
+            }
+        }
+        
+        footer {
+            position: static;
+        }
+    }
+}
