@@ -3,6 +3,7 @@ import { ChatService } from 'src/app/services/chat.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RequestsService } from 'src/app/services/requests.service';
 import { IRegisterBody } from 'src/app/models/http.models';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'app-register',
@@ -12,6 +13,7 @@ export class RegisterComponent implements OnInit {
     errorTimeout: ReturnType<typeof setTimeout> | null = null;
     errorMessage = '';
     chatId = '';
+    loading = false;
 
     constructor(
         public chatService: ChatService,
@@ -35,7 +37,10 @@ export class RegisterComponent implements OnInit {
     }
 
     enterChat(): void {
+        if (this.loading) return;
+
         if (!this.chatService.username) {
+            this.showErrorMessage('Please enter username');
             return;
         }
 
@@ -44,9 +49,11 @@ export class RegisterComponent implements OnInit {
             username: this.chatService.username,
         };
 
+        this.loading = true;
         this.reqs.register(body).subscribe({
             next: (usernameAlreadyTaken: boolean) => {
                 if (usernameAlreadyTaken) {
+                    this.loading = false;
                     this.showErrorMessage(
                         `${this.chatService.username} already in use`
                     );
@@ -55,8 +62,13 @@ export class RegisterComponent implements OnInit {
                     this.router.navigate([`/chat/${this.chatId}`]);
                 }
             },
-            error: () => {
-                this.showErrorMessage('Error while trying to connect to chat');
+            error: (err: HttpErrorResponse) => {
+                if (err.status === 404) {
+                    this.router.navigate(['/']);
+                } else {
+                    this.loading = false;
+                    this.showErrorMessage(err.error);
+                }
             },
         });
     }

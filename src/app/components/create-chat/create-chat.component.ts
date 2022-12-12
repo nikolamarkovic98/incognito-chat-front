@@ -1,9 +1,10 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { RequestsService } from 'src/app/services/requests.service';
 import { ChatService } from 'src/app/services/chat.service';
 import { Chat, IChat } from 'src/app/models/chat.model';
 import { ICreateChatBody } from 'src/app/models/http.models';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'app-create-chat',
@@ -14,8 +15,7 @@ export class CreateChatComponent {
     errorMessage = '';
     chatName = '';
     chatDuration = 10;
-
-    @ViewChild('username') usernameInput: ElementRef;
+    loading = false;
 
     constructor(
         private chatService: ChatService,
@@ -24,6 +24,8 @@ export class CreateChatComponent {
     ) {}
 
     enterChat(): void {
+        if (this.loading) return;
+
         if (this.chatName === '') {
             this.showErrorMessage('Please enter chat name');
             return;
@@ -45,12 +47,16 @@ export class CreateChatComponent {
             duration: this.chatDuration,
         };
 
+        this.loading = true;
         this.http.createChat(body).subscribe({
             next: (chat: IChat) => {
                 this.chatService.chat = new Chat(chat);
                 this.router.navigate([`/register/${chat.id}`]);
             },
-            error: (err) => console.log(err),
+            error: (err: HttpErrorResponse) => {
+                this.showErrorMessage(err.error);
+                this.loading = false;
+            },
         });
     }
 

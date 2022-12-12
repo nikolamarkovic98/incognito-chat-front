@@ -22,5 +22,10 @@
     <div class="buttons-wrapper">
         <button class="primary" (click)="enterChat()">Create Chat</button>
     </div>
-    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    <div *ngIf="errorMessage && !loading" class="message color-danger">
+        {{ errorMessage }}
+    </div>
+    <div *ngIf="loading" class="message">
+        Please wait, we are setting up your chat...
+    </div>
 </div>
