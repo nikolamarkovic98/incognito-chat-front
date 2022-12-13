@@ -24,7 +24,6 @@
                 [sentBy]="message.sentBy"
                 [sentAt]="message.sentAt"
                 [likes]="message.likes"
-                w
             ></app-message>
         </div>
     </main>
@@ -80,5 +79,12 @@
             [src]="chatService.selectedMessage.file"
             (click)="chatService.toggleImageModalBox()"
         />
+    </app-modalbox>
+    <app-modalbox
+        *ngIf="chatService.settingsModalBox"
+        [exitButton]="false"
+        (closeModalBox)="chatService.toggleSettingsModalBox()"
+    >
+        <h1>Settings Modal</h1>
     </app-modalbox>
 </div>

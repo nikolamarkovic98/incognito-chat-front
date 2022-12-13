@@ -88,6 +88,13 @@ export class ChatComponent implements OnInit, OnDestroy {
                             (currentMessage) => currentMessage.id === message.id
                         );
                         this.chatService.chat.messages[index] = message;
+                    } else if (eventType === EventTypes.DELETE) {
+                        const messageIndex =
+                            this.chatService.chat.messages.findIndex(
+                                (chatMessage) => chatMessage.id === message.id
+                            );
+                        if (messageIndex === -1) return;
+                        this.chatService.chat.messages.splice(messageIndex, 1);
                     }
                 }
             );

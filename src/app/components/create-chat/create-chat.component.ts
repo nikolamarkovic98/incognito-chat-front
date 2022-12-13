@@ -54,8 +54,12 @@ export class CreateChatComponent {
                 this.router.navigate([`/register/${chat.id}`]);
             },
             error: (err: HttpErrorResponse) => {
-                this.showErrorMessage(err.error);
                 this.loading = false;
+                if (err.status === 0) {
+                    this.showErrorMessage('Server is down, try again later');
+                } else {
+                    this.showErrorMessage(err.error);
+                }
             },
         });
     }

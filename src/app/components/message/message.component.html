@@ -1,11 +1,41 @@
 <div
     class="message flex flex-a-c flex-j-f-e"
     [ngClass]="{ other: chatService.username !== model.sentBy }"
-    (dblclick)="handleLike()"
+    (mouseenter)="hovered = true"
+    (mouseleave)="handleMouseLeave()"
 >
+    <div
+        class="settings"
+        [ngStyle]="{ display: hovered || settingsClick ? 'flex' : 'none' }"
+        (click)="settingsClick = !settingsClick"
+    >
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div
+            class="settings-list"
+            (mouseleave)="hovered = false; settingsClick = false"
+            [ngStyle]="{ display: settingsClick ? 'flex' : 'none' }"
+        >
+            <div class="settings-item" (click)="handleLike(); hovered = false">
+                Like
+            </div>
+            <div class="settings-item" (click)="handleCopy()">Copy</div>
+            <div
+                *ngIf="chatService.username === model.sentBy"
+                class="settings-item"
+                (click)="handleDelete()"
+            >
+                Delete
+            </div>
+        </div>
+    </div>
     <div
         class="message-wrapper"
         [ngClass]="{ other: chatService.username !== model.sentBy }"
+        (dblclick)="handleLike()"
+        appHold
+        (hold)="showSettings()"
     >
         <h5 class="sent-by">{{ model.sentBy }}:</h5>
         <h4 *ngIf="model.type == 'text'" class="text">{{ model.text }}</h4>

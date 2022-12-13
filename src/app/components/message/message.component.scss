@@ -8,15 +8,8 @@
     -ms-user-select: none;
     user-select: none;
 
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20%);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .settings {
+        display: none;
     }
 
     .sent-by,
@@ -76,5 +69,59 @@
 
     img {
         max-width: 200px;
+    }
+}
+
+@media (min-width: $bp-md) {
+    .message {
+        .settings {
+            position: relative;
+            margin-right: $spacer-4;
+            padding: $spacer-2;
+            cursor: pointer;
+            z-index: 10;
+
+            .dot {
+                width: $spacer-1;
+                height: $spacer-1;
+                margin-right: $spacer-1;
+                background-color: $color-gray;
+                border-radius: 50%;
+            }
+
+            &:hover {
+                .dot {
+                    background-color: $color-light;
+                }
+            }
+
+            .settings-list {
+                align-items: center;
+                position: absolute;
+                top: 200%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                padding: $spacer-2;
+                text-align: left;
+                background-color: $color-gray;
+                border-radius: 8px;
+
+                .settings-item {
+                    padding: 0 $spacer-1;
+
+                    &:hover {
+                        color: rgba($color-light, 0.6);
+                    }
+                }
+            }
+        }
+
+        &.other {
+            .settings {
+                order: 2;
+                margin-right: 0;
+                margin-left: $spacer-4;
+            }
+        }
     }
 }

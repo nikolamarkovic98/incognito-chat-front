@@ -9,9 +9,7 @@ import { ICreateChatBody, IRegisterBody } from '../models/http.models';
     providedIn: 'root',
 })
 export class RequestsService {
-    BASE_URL = `${env.production ? 'https' : 'http'}://${env.domain}${
-        env.production ? '' : `:${env.port}`
-    }`;
+    BASE_URL = `${env.http}://${env.domain}:${`${env.port}`}`;
 
     constructor(private http: HttpClient) {}
 

@@ -1,5 +1,7 @@
 export const environment = {
     domain: 'incognito-chat-api.onrender.com',
-    port: 80,
+    http: 'https',
+    ws: 'wss',
+    port: 443,
     production: true,
 };

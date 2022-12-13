@@ -6,8 +6,9 @@ import { Chat } from '../models/chat.model';
     providedIn: 'root',
 })
 export class ChatService {
-    likesModalBox: boolean = false;
-    imageModalBox: boolean = false;
+    likesModalBox = false;
+    imageModalBox = false;
+    settingsModalBox = false;
 
     selectedMessage: IMessage;
     chat: Chat;
@@ -26,6 +27,10 @@ export class ChatService {
 
     toggleImageModalBox(): void {
         this.imageModalBox = !this.imageModalBox;
+    }
+
+    toggleSettingsModalBox(): void {
+        this.settingsModalBox = !this.settingsModalBox;
     }
 
     selectMessage(message: IMessage) {

@@ -3,8 +3,7 @@ import { IMessage } from './message.model';
 export enum EventTypes {
     CREATE = 0,
     LIKE = 1,
-    UPDATE = 2,
-    DELETE = 3,
+    DELETE = 2,
 }
 
 export interface ISocketMessage {

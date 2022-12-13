@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { environment as env } from '../../environments/environment';
 import { ISocketMessage } from '../models/ws.model';
+import { environment as env } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root',
 })
 export class SocketService {
     socket: WebSocket | null = null;
-    BASE_URL = `${env.production ? 'wss' : 'ws'}://${env.domain}${
-        env.production ? '' : `:${env.port}`
-    }/ws`;
+    BASE_URL = `${env.ws}://${env.domain}:${env.port}/ws`;
 
     // Subject that notifies when socket is closed
     private socketClosedSource = new Subject<boolean>();
@@ -38,7 +36,7 @@ export class SocketService {
             this.socketMessageReceivedSource.next(data);
         };
 
-        this.socket.onerror = (e) => {
+        this.socket.onerror = () => {
             this.socket?.close();
             this.socket = null;
         };

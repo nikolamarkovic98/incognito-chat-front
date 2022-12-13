@@ -19,6 +19,9 @@ export class MessageComponent implements OnInit {
     @Input() sentAt: string;
     @Input() likes: string[];
 
+    hovered = false;
+    settingsClick = false;
+
     model: Message;
 
     constructor(public chatService: ChatService, private ws: SocketService) {}
@@ -29,11 +32,32 @@ export class MessageComponent implements OnInit {
             id: this.id,
             type: this.type,
             text: this.text,
-            file: `http://${env.domain}:${env.port}/${this.file}`,
+            file: `${env.http}://${env.domain}:${env.port}/${this.file}`,
             sentBy: this.sentBy,
             sentAt: this.sentAt,
             likes: this.likes,
         });
+    }
+
+    handleMouseLeave(): void {
+        if (this.settingsClick) {
+            return;
+        }
+
+        this.hovered = false;
+    }
+
+    handleCopy(): void {
+        navigator.clipboard.writeText(this.model.text);
+    }
+
+    handleDelete(): void {
+        const signal: ISocketMessage = {
+            eventType: EventTypes.DELETE,
+            message: this.model,
+        };
+
+        this.ws.sendMessage(signal);
     }
 
     showLikes(): void {
@@ -44,6 +68,11 @@ export class MessageComponent implements OnInit {
     showImage(): void {
         this.chatService.selectMessage(this.model);
         this.chatService.toggleImageModalBox();
+    }
+
+    showSettings(): void {
+        this.chatService.selectMessage(this.model);
+        this.chatService.toggleSettingsModalBox();
     }
 
     handleLike(): void {

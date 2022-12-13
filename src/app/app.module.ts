@@ -12,6 +12,7 @@ import { MessageComponent } from './components/message/message.component';
 import { ModalboxComponent } from './components/modalbox/modalbox.component';
 import { LikesListComponent } from './components/likes-list/likes-list.component';
 import { RegisterComponent } from './components/register/register.component';
+import { HoldDirective } from './directives/hold.directive';
 
 @NgModule({
     declarations: [
@@ -22,6 +23,7 @@ import { RegisterComponent } from './components/register/register.component';
         ModalboxComponent,
         LikesListComponent,
         RegisterComponent,
+        HoldDirective,
     ],
     imports: [
         BrowserModule,
