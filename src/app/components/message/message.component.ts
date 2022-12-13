@@ -71,8 +71,9 @@ export class MessageComponent implements OnInit {
     }
 
     showSettings(): void {
-        this.chatService.selectMessage(this.model);
-        this.chatService.toggleSettingsModalBox();
+        // this.chatService.selectMessage(this.model);
+        // this.chatService.toggleSettingsModalBox();
+        this.settingsClick = true;
     }
 
     handleLike(): void {

@@ -16,12 +16,12 @@ export class HoldDirective {
 
     constructor() {}
 
-    @HostListener('mousedown') onMouseDown() {
+    @HostListener('touchstart') onTouchStart() {
         if (window.innerWidth >= 1024) return;
         this.timeout = setTimeout(() => this.hold.emit(), this.timeoutTime);
     }
 
-    @HostListener('mouseup') onMouseUp() {
+    @HostListener('touchend') onTouchEnd() {
         this.timeout && clearTimeout(this.timeout);
     }
 }
