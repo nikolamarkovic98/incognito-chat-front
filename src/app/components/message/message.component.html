@@ -16,7 +16,7 @@
             class="settings-list"
             (mouseleave)="hovered = false; settingsClick = false"
             [ngStyle]="{ display: settingsClick ? 'flex' : 'none' }"
-            [ngClass]="{ 'last-child': isLast }"
+            [ngClass]="{ 'last-child': isLast, 'first-child': isFirst }"
         >
             <div
                 class="settings-item"

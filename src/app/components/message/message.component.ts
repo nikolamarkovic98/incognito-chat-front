@@ -17,6 +17,7 @@ export class MessageComponent implements OnInit {
     @Input() sentBy: string;
     @Input() sentAt: string;
     @Input() likes: string[];
+    @Input() isFirst: boolean;
     @Input() isLast: boolean;
     @Output() handleLike = new EventEmitter();
     @Output() handleCopy = new EventEmitter();

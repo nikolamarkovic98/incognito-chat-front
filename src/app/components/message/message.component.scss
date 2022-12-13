@@ -110,6 +110,10 @@
                     top: -100%;
                 }
 
+                &.first-child {
+                    top: 200%;
+                }
+
                 .settings-item {
                     padding: 0 $spacer-1;
 

@@ -18,6 +18,7 @@
             <app-message
                 *ngFor="
                     let message of chatService.chat.messages;
+                    let isFirst = first;
                     let isLast = last
                 "
                 [id]="message.id"
@@ -29,6 +30,7 @@
                 [likes]="message.likes"
                 (handleLike)="handleLike($event)"
                 (handleDelete)="handleDelete($event)"
+                [isFirst]="isFirst"
                 [isLast]="isLast"
             ></app-message>
         </div>
