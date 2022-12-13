@@ -22,10 +22,10 @@
     <div class="buttons-wrapper">
         <button class="primary" (click)="enterChat()">Create Chat</button>
     </div>
-    <div *ngIf="errorMessage && !loading" class="message color-danger">
+    <div *ngIf="errorMessage && !loading" class="response-message color-danger">
         {{ errorMessage }}
     </div>
-    <div *ngIf="loading" class="message">
+    <div *ngIf="loading" class="response-message">
         Please wait, we are setting up your chat...
     </div>
 </div>

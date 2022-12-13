@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 import { RequestsService } from 'src/app/services/requests.service';
 import { ChatService } from 'src/app/services/chat.service';
 import { Chat, IChat } from 'src/app/models/chat.model';
@@ -20,8 +21,11 @@ export class CreateChatComponent {
     constructor(
         private chatService: ChatService,
         private http: RequestsService,
-        private router: Router
-    ) {}
+        private router: Router,
+        private titleService: Title
+    ) {
+        this.titleService.setTitle('Incognito Chat');
+    }
 
     enterChat(): void {
         if (this.loading) return;

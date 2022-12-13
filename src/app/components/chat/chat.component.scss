@@ -23,7 +23,7 @@
         }
 
         span {
-            color: rgba($color-light, .4);
+            color: rgba($color-light, 0.4);
         }
     }
 
@@ -40,10 +40,10 @@
         padding-bottom: 72px;
         padding-left: $spacer-2;
         padding-right: $spacer-2;
-        
+
         &::-webkit-scrollbar {
-                width: 4px;
-                background-color: $color-primary;
+            width: 4px;
+            background-color: $color-primary;
         }
 
         &::-webkit-scrollbar-thumb {
@@ -60,7 +60,7 @@
         bottom: 0;
         left: 0;
         right: 0;
-        z-index: 10;
+        z-index: 9;
         background-color: $color-primary;
         padding: $spacer-1;
 
@@ -79,13 +79,14 @@
 
         .icons {
             padding-left: $spacer-2;
-            transition: all .5s;
+            transition: all 0.5s;
 
             .file {
                 display: none;
             }
 
-            .image, .like {
+            .image,
+            .like {
                 cursor: pointer;
             }
         }
@@ -115,7 +116,7 @@
         header {
             position: static;
         }
-        
+
         main {
             position: static;
             margin-bottom: 0;
@@ -125,9 +126,27 @@
                 padding: 0;
             }
         }
-        
+
         footer {
             position: static;
         }
+    }
+}
+
+.modal-settings-item {
+    padding: $spacer-3;
+    text-align: center;
+    border-bottom: 1px solid $color-gray;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    &:first-child {
+        padding-top: 0;
+    }
+
+    &:last-child {
+        padding-bottom: 0;
+        border-bottom: unset;
     }
 }

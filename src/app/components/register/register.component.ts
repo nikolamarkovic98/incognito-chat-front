@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ChatService } from 'src/app/services/chat.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RequestsService } from 'src/app/services/requests.service';
@@ -19,11 +20,14 @@ export class RegisterComponent implements OnInit {
         public chatService: ChatService,
         private reqs: RequestsService,
         private router: Router,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private titleService: Title
     ) {
         this.chatId = this.route.snapshot.params['id'];
         if (!this.chatId) {
             this.router.navigate(['/']);
+        } else {
+            this.titleService.setTitle('Incognito Chat - Register');
         }
     }
 

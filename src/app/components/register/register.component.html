@@ -11,8 +11,8 @@
     <div class="buttons-wrapper">
         <button class="primary" (click)="enterChat()">Enter Chat</button>
     </div>
-    <div *ngIf="errorMessage && !loading" class="message color-danger">
+    <div *ngIf="errorMessage && !loading" class="response-message color-danger">
         {{ errorMessage }}
     </div>
-    <div *ngIf="loading" class="message">Loading chat...</div>
+    <div *ngIf="loading" class="response-message">Loading chat...</div>
 </div>

@@ -79,7 +79,6 @@
             margin-right: $spacer-4;
             padding: $spacer-2;
             cursor: pointer;
-            z-index: 10;
 
             .dot {
                 width: $spacer-1;
@@ -105,6 +104,11 @@
                 text-align: left;
                 background-color: $color-gray;
                 border-radius: 8px;
+                z-index: 10;
+
+                &.last-child {
+                    top: -100%;
+                }
 
                 .settings-item {
                     padding: 0 $spacer-1;
@@ -122,6 +126,10 @@
                 margin-right: 0;
                 margin-left: $spacer-4;
             }
+        }
+
+        .message-wrapper {
+            max-width: 90%;
         }
     }
 }

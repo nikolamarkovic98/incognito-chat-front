@@ -10,7 +10,7 @@ import { Title } from '@angular/platform-browser';
 import { ChatService } from 'src/app/services/chat.service';
 import { RequestsService } from 'src/app/services/requests.service';
 import { SocketService } from 'src/app/services/socket.service';
-import { IMessage } from 'src/app/models/message.model';
+import { IMessage, Message } from 'src/app/models/message.model';
 import { EventTypes, ISocketMessage } from 'src/app/models/ws.model';
 import { Chat, IChat } from 'src/app/models/chat.model';
 import { Subscription } from 'rxjs';
@@ -33,7 +33,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     @ViewChild('file')
     fileRef: ElementRef;
 
-    maxHeight: number = 0;
     timeLeft: string = '';
     chatId: string;
 
@@ -68,8 +67,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.maxHeight = window.innerHeight;
-
         // once the socket closes, redirect to Home
         this.socketClosedSub = this.socketService.socketClosed.subscribe(() =>
             this.router.navigate(['/'])
@@ -129,6 +126,40 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.socketMessageReceivedSub &&
             this.socketMessageReceivedSub.unsubscribe();
         this.timer && clearInterval(this.timer);
+    }
+
+    handleDelete(message: Message): void {
+        const signal: ISocketMessage = {
+            eventType: EventTypes.DELETE,
+            message,
+        };
+
+        this.socketService.sendMessage(signal);
+        this.chatService.settingsModalBox = false;
+    }
+
+    handleCopy(message: Message): void {
+        navigator.clipboard.writeText(message.text);
+        this.chatService.settingsModalBox = false;
+    }
+
+    handleLike(message: Message): void {
+        const likeIndex = message.likes.findIndex(
+            (currentLike) => currentLike === this.chatService.username
+        );
+        if (likeIndex === -1) {
+            message.likes.push(this.chatService.username);
+        } else {
+            message.likes.splice(likeIndex, 1);
+        }
+
+        const signal: ISocketMessage = {
+            eventType: EventTypes.LIKE,
+            message,
+        };
+
+        this.socketService.sendMessage(signal);
+        this.chatService.settingsModalBox = false;
     }
 
     // scroll at the end of chat

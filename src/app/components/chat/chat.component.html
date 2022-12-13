@@ -16,7 +16,10 @@
     <main #mainRef>
         <div class="messages" #chatRef>
             <app-message
-                *ngFor="let message of chatService.chat.messages"
+                *ngFor="
+                    let message of chatService.chat.messages;
+                    let isLast = last
+                "
                 [id]="message.id"
                 [type]="message.type"
                 [text]="message.text"
@@ -24,6 +27,9 @@
                 [sentBy]="message.sentBy"
                 [sentAt]="message.sentAt"
                 [likes]="message.likes"
+                (handleLike)="handleLike($event)"
+                (handleDelete)="handleDelete($event)"
+                [isLast]="isLast"
             ></app-message>
         </div>
     </main>
@@ -61,30 +67,49 @@
             send
         </div>
     </footer>
-    <app-modalbox
-        *ngIf="chatService.likesModalBox"
-        (closeModalBox)="chatService.toggleLikesModalBox()"
-    >
-        <app-likes-list></app-likes-list>
-    </app-modalbox>
-    <app-modalbox
-        *ngIf="chatService.imageModalBox"
-        [classes]="['image']"
-        [exitButton]="false"
-        (closeModalBox)="chatService.toggleImageModalBox()"
-    >
-        <img
-            class="img"
-            alt="Unknown URL"
-            [src]="chatService.selectedMessage.file"
-            (click)="chatService.toggleImageModalBox()"
-        />
-    </app-modalbox>
-    <app-modalbox
-        *ngIf="chatService.settingsModalBox"
-        [exitButton]="false"
-        (closeModalBox)="chatService.toggleSettingsModalBox()"
-    >
-        <h1>Settings Modal</h1>
-    </app-modalbox>
 </div>
+<app-modalbox
+    *ngIf="chatService.likesModalBox"
+    (closeModalBox)="chatService.toggleLikesModalBox()"
+>
+    <app-likes-list></app-likes-list>
+</app-modalbox>
+<app-modalbox
+    *ngIf="chatService.imageModalBox"
+    [classes]="['image']"
+    [exitButton]="false"
+    (closeModalBox)="chatService.toggleImageModalBox()"
+>
+    <img
+        class="img"
+        alt="Unknown URL"
+        [src]="chatService.selectedMessage.file"
+        (click)="chatService.toggleImageModalBox()"
+    />
+</app-modalbox>
+<app-modalbox
+    *ngIf="chatService.settingsModalBox"
+    [classes]="['settings']"
+    [exitButton]="false"
+    (closeModalBox)="chatService.toggleSettingsModalBox()"
+>
+    <div
+        class="modal-settings-item"
+        (click)="handleLike(chatService.selectedMessage)"
+    >
+        Like
+    </div>
+    <div
+        class="modal-settings-item"
+        (click)="handleCopy(chatService.selectedMessage)"
+    >
+        Copy
+    </div>
+    <div
+        *ngIf="chatService.username === chatService.selectedMessage.sentBy"
+        class="modal-settings-item"
+        (click)="handleDelete(chatService.selectedMessage)"
+    >
+        Delete
+    </div>
+</app-modalbox>

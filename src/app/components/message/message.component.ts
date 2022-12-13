@@ -1,8 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SocketService } from 'src/app/services/socket.service';
 import { ChatService } from 'src/app/services/chat.service';
 import { Message } from 'src/app/models/message.model';
-import { EventTypes, ISocketMessage } from 'src/app/models/ws.model';
 import { environment as env } from '../../../environments/environment';
 
 @Component({
@@ -18,6 +17,10 @@ export class MessageComponent implements OnInit {
     @Input() sentBy: string;
     @Input() sentAt: string;
     @Input() likes: string[];
+    @Input() isLast: boolean;
+    @Output() handleLike = new EventEmitter();
+    @Output() handleCopy = new EventEmitter();
+    @Output() handleDelete = new EventEmitter();
 
     hovered = false;
     settingsClick = false;
@@ -47,19 +50,6 @@ export class MessageComponent implements OnInit {
         this.hovered = false;
     }
 
-    handleCopy(): void {
-        navigator.clipboard.writeText(this.model.text);
-    }
-
-    handleDelete(): void {
-        const signal: ISocketMessage = {
-            eventType: EventTypes.DELETE,
-            message: this.model,
-        };
-
-        this.ws.sendMessage(signal);
-    }
-
     showLikes(): void {
         this.chatService.selectMessage(this.model);
         this.chatService.toggleLikesModalBox();
@@ -71,26 +61,8 @@ export class MessageComponent implements OnInit {
     }
 
     showSettings(): void {
-        // this.chatService.selectMessage(this.model);
-        // this.chatService.toggleSettingsModalBox();
-        this.settingsClick = true;
-    }
-
-    handleLike(): void {
-        const likeIndex = this.model.likes.findIndex(
-            (currentLike) => currentLike === this.chatService.username
-        );
-        if (likeIndex === -1) {
-            this.model.likes.push(this.chatService.username);
-        } else {
-            this.model.likes.splice(likeIndex, 1);
-        }
-
-        const signal: ISocketMessage = {
-            eventType: EventTypes.LIKE,
-            message: this.model,
-        };
-
-        this.ws.sendMessage(signal);
+        this.chatService.selectMessage(this.model);
+        this.chatService.toggleSettingsModalBox();
+        // this.settingsClick = true;
     }
 }

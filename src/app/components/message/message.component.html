@@ -16,15 +16,21 @@
             class="settings-list"
             (mouseleave)="hovered = false; settingsClick = false"
             [ngStyle]="{ display: settingsClick ? 'flex' : 'none' }"
+            [ngClass]="{ 'last-child': isLast }"
         >
-            <div class="settings-item" (click)="handleLike(); hovered = false">
+            <div
+                class="settings-item"
+                (click)="handleLike.emit(model); hovered = false"
+            >
                 Like
             </div>
-            <div class="settings-item" (click)="handleCopy()">Copy</div>
+            <div class="settings-item" (click)="handleCopy.emit(model)">
+                Copy
+            </div>
             <div
                 *ngIf="chatService.username === model.sentBy"
                 class="settings-item"
-                (click)="handleDelete()"
+                (click)="handleDelete.emit(model)"
             >
                 Delete
             </div>
@@ -33,7 +39,7 @@
     <div
         class="message-wrapper"
         [ngClass]="{ other: chatService.username !== model.sentBy }"
-        (dblclick)="handleLike()"
+        (dblclick)="handleLike.emit(model)"
         appHold
         (hold)="showSettings()"
     >

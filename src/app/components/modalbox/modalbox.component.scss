@@ -16,6 +16,7 @@
         position: relative;
         width: 300px;
         max-height: 60vh;
+        max-width: 86%;
         overflow: auto;
         padding: $spacer-4;
         background-color: $color-dark;
@@ -65,6 +66,12 @@
         display: flex;
         width: 90vw;
         max-height: 80vh;
+    }
+}
+
+.modalbox.settings {
+    .modalbox__content {
+        border-radius: $spacer-4;
     }
 }
 
