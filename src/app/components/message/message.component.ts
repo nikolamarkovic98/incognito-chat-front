@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { SocketService } from 'src/app/services/socket.service';
 import { ChatService } from 'src/app/services/chat.service';
 import { Message } from 'src/app/models/message.model';
 import { environment as env } from '../../../environments/environment';
@@ -28,7 +27,7 @@ export class MessageComponent implements OnInit {
 
     model: Message;
 
-    constructor(public chatService: ChatService, private ws: SocketService) {}
+    constructor(public chatService: ChatService) {}
 
     ngOnInit(): void {
         // init component data model

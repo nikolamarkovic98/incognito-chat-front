@@ -84,7 +84,8 @@ export class ChatComponent implements OnInit, OnDestroy {
                         const index = this.chatService.chat.messages.findIndex(
                             (currentMessage) => currentMessage.id === message.id
                         );
-                        this.chatService.chat.messages[index] = message;
+                        this.chatService.chat.messages[index].likes =
+                            message.likes;
                     } else if (eventType === EventTypes.DELETE) {
                         const messageIndex =
                             this.chatService.chat.messages.findIndex(

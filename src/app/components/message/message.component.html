@@ -24,7 +24,11 @@
             >
                 Like
             </div>
-            <div class="settings-item" (click)="handleCopy.emit(model)">
+            <div
+                *ngIf="model.type == 'text'"
+                class="settings-item"
+                (click)="handleCopy.emit(model)"
+            >
                 Copy
             </div>
             <div

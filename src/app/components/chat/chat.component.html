@@ -104,6 +104,7 @@
     <div
         class="modal-settings-item"
         (click)="handleCopy(chatService.selectedMessage)"
+        *ngIf="chatService.selectedMessage.type == 'text'"
     >
         Copy
     </div>
