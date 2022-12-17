@@ -6,6 +6,7 @@ export interface IChat {
     name: string;
     duration: number;
     messages: IMessage[];
+    usersTyping: string[];
 }
 
 export class Chat {
@@ -14,6 +15,7 @@ export class Chat {
     name: string;
     duration: number;
     messages: IMessage[];
+    usersTyping: string[];
 
     constructor(chat: IChat) {
         this.id = chat.id;
@@ -21,5 +23,6 @@ export class Chat {
         this.name = chat.name;
         this.duration = chat.duration || 10;
         this.messages = chat.messages || [];
+        this.usersTyping = chat.usersTyping || [];
     }
 }

@@ -4,6 +4,7 @@ export enum EventTypes {
     CREATE = 0,
     LIKE = 1,
     DELETE = 2,
+    TYPING = 3,
 }
 
 export interface ISocketMessage {

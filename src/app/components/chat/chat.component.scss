@@ -40,6 +40,9 @@
         padding-bottom: 72px;
         padding-left: $spacer-2;
         padding-right: $spacer-2;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
 
         &::-webkit-scrollbar {
             width: 4px;
@@ -105,6 +108,10 @@
             }
         }
     }
+
+    .typing {
+        padding-bottom: 12px;
+    }
 }
 
 @media (min-width: $bp-md) {
@@ -129,6 +136,10 @@
 
         footer {
             position: static;
+        }
+
+        .typing {
+            padding-bottom: 0;
         }
     }
 }

@@ -35,6 +35,8 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     timeLeft: string = '';
     chatId: string;
+    typing = false;
+    usersTypingMessage = '';
 
     timer: ReturnType<typeof setInterval> | null = null;
     socketClosedSub: Subscription;
@@ -76,10 +78,13 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.socketMessageReceivedSub =
             this.socketService.socketMessageReceived.subscribe(
                 (socketMessage: ISocketMessage) => {
-                    const { eventType, message } = socketMessage;
+                    let { eventType, message } = socketMessage;
 
                     if (eventType === EventTypes.CREATE) {
-                        this.showMessage(message);
+                        this.chatService.chat.messages.push(message);
+                        this.scrollDown();
+                        this.filterTyping(message);
+                        this.setTypingText();
                     } else if (eventType === EventTypes.LIKE) {
                         const index = this.chatService.chat.messages.findIndex(
                             (currentMessage) => currentMessage.id === message.id
@@ -93,6 +98,16 @@ export class ChatComponent implements OnInit, OnDestroy {
                             );
                         if (messageIndex === -1) return;
                         this.chatService.chat.messages.splice(messageIndex, 1);
+                    } else if (eventType === EventTypes.TYPING) {
+                        if (message.text) {
+                            this.chatService.chat.usersTyping.push(
+                                message.sentBy
+                            );
+                            this.setTypingText();
+                        } else {
+                            this.filterTyping(message);
+                            this.setTypingText();
+                        }
                     }
                 }
             );
@@ -110,6 +125,7 @@ export class ChatComponent implements OnInit, OnDestroy {
                         `Incognito Chat - ${this.chatService.chat.name}`
                     );
                     this.startConnection();
+                    this.setTypingText();
                 },
                 error: () => this.router.navigate(['/']),
             });
@@ -117,6 +133,14 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        if (this.typing) {
+            const typingMessage: ISocketMessage = {
+                eventType: EventTypes.TYPING,
+                message: this.createMessage('', ''),
+            };
+            this.socketService.sendMessage(typingMessage);
+        }
+
         // clear inputs and state
         this.chatService.text = '';
         this.chatService.username = '';
@@ -163,17 +187,71 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.chatService.settingsModalBox = false;
     }
 
+    handleTyping(e: Event): void {
+        const target = e.target as HTMLInputElement;
+        this.chatService.text = target.value;
+
+        if (this.chatService.text) {
+            if (this.typing) return;
+
+            this.typing = true;
+            const signal: ISocketMessage = {
+                eventType: EventTypes.TYPING,
+                message: this.createMessage(this.chatService.text, 'text'),
+            };
+
+            this.socketService.sendMessage(signal);
+        } else {
+            const signal: ISocketMessage = {
+                eventType: EventTypes.TYPING,
+                message: this.createMessage('', 'text'),
+            };
+
+            this.socketService.sendMessage(signal);
+            this.typing = false;
+        }
+    }
+
+    filterTyping(message: IMessage): void {
+        this.chatService.chat.usersTyping =
+            this.chatService.chat.usersTyping.filter(
+                (userTyping) => userTyping !== message.sentBy
+            );
+    }
+
+    setTypingText(): void {
+        let usersTyping = this.chatService.chat.usersTyping.filter(
+            (userTyping) => userTyping !== this.chatService.username
+        );
+        if (!usersTyping.length) {
+            this.usersTypingMessage = '';
+            return;
+        }
+
+        usersTyping = usersTyping.slice(0, 3);
+        const typingLen = usersTyping.length;
+        let typingMessage = usersTyping.join(', ');
+
+        if (typingLen === 1) {
+            this.usersTypingMessage = typingMessage + ' is typing';
+        } else if (this.chatService.chat.usersTyping.length > 4) {
+            const rest = (this.chatService.chat.usersTyping.length - 1) % 3;
+            this.usersTypingMessage =
+                typingMessage +
+                ` and ${rest} ${rest === 1 ? 'other' : 'others'} ${
+                    rest === 1 ? 'is' : 'are'
+                } typing`;
+        } else {
+            this.usersTypingMessage = typingMessage + ' are typing';
+        }
+    }
+
     // scroll at the end of chat
     scrollDown(): void {
         setTimeout(() => {
             const totalHeight = this.chatRef.nativeElement.offsetHeight;
             this.mainRef.nativeElement.scrollTop = totalHeight;
         }, 100);
-    }
-
-    showMessage(message: IMessage): void {
-        this.chatService.chat.messages.push(message);
-        this.scrollDown();
     }
 
     startConnection(): void {
@@ -228,13 +306,20 @@ export class ChatComponent implements OnInit, OnDestroy {
         if (!value) return;
 
         // prepare message for sending
-        const socketMessage: ISocketMessage = {
+        const createMessage: ISocketMessage = {
             eventType: EventTypes.CREATE,
             message: this.createMessage(value, 'text'),
         };
-        this.socketService.sendMessage(socketMessage);
+        this.socketService.sendMessage(createMessage);
+
+        const typingMessage: ISocketMessage = {
+            eventType: EventTypes.TYPING,
+            message: this.createMessage('', 'text'),
+        };
+        this.socketService.sendMessage(typingMessage);
 
         // reset values
+        this.typing = false;
         this.textRef.nativeElement.value = '';
         this.chatService.text = '';
     }

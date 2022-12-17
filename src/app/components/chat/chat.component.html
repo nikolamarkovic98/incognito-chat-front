@@ -34,6 +34,14 @@
                 [isLast]="isLast"
             ></app-message>
         </div>
+        <div
+            class="typing"
+            [ngStyle]="{
+                visibility: usersTypingMessage === '' ? 'hidden' : 'visible'
+            }"
+        >
+            {{ usersTypingMessage === "" ? "None" : usersTypingMessage }}
+        </div>
     </main>
     <footer class="flex flex-a-c">
         <input
@@ -41,7 +49,7 @@
             class="color-light"
             id="message-text-input"
             placeholder="Message..."
-            [(ngModel)]="chatService.text"
+            (input)="handleTyping($event)"
             (keyup.enter)="sendMessage()"
         />
         <div

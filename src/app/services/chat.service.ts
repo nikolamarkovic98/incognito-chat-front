@@ -42,8 +42,9 @@ export class ChatService {
             id: '',
             createdAt: '',
             duration: 0,
-            messages: [],
             name: '',
+            messages: [],
+            usersTyping: [],
         });
     }
 }
