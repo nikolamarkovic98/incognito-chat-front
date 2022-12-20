@@ -15,6 +15,7 @@ export class CreateChatComponent {
     errorTimeout: ReturnType<typeof setTimeout> | null = null;
     errorMessage = '';
     chatName = '';
+    password = '';
     chatDuration = 10;
     loading = false;
 
@@ -27,27 +28,35 @@ export class CreateChatComponent {
         this.titleService.setTitle('Incognito Chat');
     }
 
-    enterChat(): void {
+    createChat(): void {
         if (this.loading) return;
 
         if (this.chatName === '') {
-            this.showErrorMessage('Please enter chat name');
+            this.showErrorMessage('Please enter chat name.');
+            return;
+        }
+
+        if (this.chatName.length > 20) {
+            this.showErrorMessage(
+                'Maximum length for chat name is 20 characters.'
+            );
             return;
         }
 
         if (this.chatDuration > 60) {
-            this.showErrorMessage('Maximum chat time is 60 minutes');
+            this.showErrorMessage('Maximum chat time is 60 minutes.');
             return;
         }
 
         if (10 > this.chatDuration) {
-            this.showErrorMessage('Minimum chat time is 10 minutes');
+            this.showErrorMessage('Minimum chat time is 10 minutes.');
             return;
         }
 
         const body: ICreateChatBody = {
             createdAt: new Date().toString(),
             name: this.chatName,
+            password: this.password,
             duration: this.chatDuration,
         };
 

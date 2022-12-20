@@ -1,6 +1,6 @@
 <div class="chat">
-    <header class="flex flex-a-c flex-j-s-b">
-        <div class="flex flex-a-c">
+    <header class="flex flex--a-c flex--j-s-b">
+        <div class="flex flex--a-c">
             <mat-icon
                 (click)="router.navigate(['/'])"
                 fontIcon="arrow_back"
@@ -43,7 +43,7 @@
             {{ usersTypingMessage === "" ? "None" : usersTypingMessage }}
         </div>
     </main>
-    <footer class="flex flex-a-c">
+    <footer class="flex flex--a-c">
         <input
             #text
             class="color-light"
@@ -54,7 +54,7 @@
         />
         <div
             [ngStyle]="{ 'max-width': chatService.text ? '0px' : '56px' }"
-            class="icons flex flex-a-c"
+            class="icons flex flex--a-c"
         >
             <input
                 #file

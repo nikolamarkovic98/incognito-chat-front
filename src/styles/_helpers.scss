@@ -2,46 +2,50 @@
     display: flex;
 }
 
-.flex-c {
+.flex--c {
     flex-direction: column;
 }
 
-.flex-a-c {
+.flex--a-c {
     align-items: center;
 }
 
-.flex-j-s-b {
+.flex--j-s-b {
     justify-content: space-between;
 }
 
-.flex-j-f-e {
+.flex--j-f-e {
     justify-content: flex-end;
 }
 
-.flex-j-c {
+.flex--j-c {
     justify-content: center;
 }
 
-.color-primary {
+.color--primary {
     color: $color-primary;
 }
 
-.color-secondary {
+.color--secondary {
     color: $color-secondary;
 }
 
-.color-gray {
+.color--gray {
     color: $color-gray;
 }
 
-.color-dark {
+.color--dark {
     color: $color-dark;
 }
 
-.color-light {
+.color--light {
     color: $color-light;
 }
 
-.color-danger {
+.color--danger {
     color: $color-danger;
+}
+
+.text-align--right {
+    text-align: right;
 }

@@ -1,28 +1,51 @@
 <div class="create-chat wrapper">
-    <div class="form-group">
-        <h3>Enter name of chat</h3>
-        <input
-            type="text"
-            placeholder="Chat Name"
-            (keyup.enter)="enterChat()"
-            [(ngModel)]="chatName"
-        />
-    </div>
-    <div class="form-group">
-        <h3>Chat duration (min 10, max 60 minutes)</h3>
-        <input
-            type="number"
-            min="10"
-            max="60"
-            step="5"
-            (keyup.enter)="enterChat()"
-            [(ngModel)]="chatDuration"
-        />
-    </div>
-    <div class="buttons-wrapper">
-        <button class="primary" (click)="enterChat()">Create Chat</button>
-    </div>
-    <div *ngIf="errorMessage && !loading" class="response-message color-danger">
+    <form (submit)="createChat()">
+        <div class="form-group">
+            <h3>Enter chat name <span class="color--danger">*</span></h3>
+            <input
+                type="text"
+                name="username"
+                placeholder="Chat Name"
+                (keyup.enter)="createChat()"
+                [(ngModel)]="chatName"
+            />
+        </div>
+        <div class="form-group">
+            <h3>Enter chat password</h3>
+            <input
+                type="password"
+                name="password"
+                autocomplete="off"
+                placeholder="Password"
+                (keyup.enter)="createChat()"
+                [(ngModel)]="password"
+            />
+        </div>
+        <div class="form-group">
+            <h3>
+                Chat duration (min 10, max 60 minutes)
+                <span class="color--danger">*</span>
+            </h3>
+            <input
+                type="number"
+                name="duration"
+                min="10"
+                max="60"
+                step="5"
+                (keyup.enter)="createChat()"
+                [(ngModel)]="chatDuration"
+            />
+        </div>
+        <div class="form-group text-align--right">
+            <button class="primary" type="submit" (click)="createChat()">
+                Create Chat
+            </button>
+        </div>
+    </form>
+    <div
+        *ngIf="errorMessage && !loading"
+        class="response-message color--danger"
+    >
         {{ errorMessage }}
     </div>
     <div *ngIf="loading" class="response-message">

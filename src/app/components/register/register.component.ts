@@ -14,6 +14,7 @@ export class RegisterComponent {
     errorTimeout: ReturnType<typeof setTimeout> | null = null;
     errorMessage = '';
     chatId = '';
+    password: '';
     loading = false;
 
     constructor(
@@ -43,6 +44,7 @@ export class RegisterComponent {
         const body: IRegisterBody = {
             chatId: this.chatId,
             username: this.chatService.username,
+            password: this.password,
         };
 
         this.loading = true;

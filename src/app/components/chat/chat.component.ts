@@ -92,12 +92,10 @@ export class ChatComponent implements OnInit, OnDestroy {
                         this.chatService.chat.messages[index].likes =
                             message.likes;
                     } else if (eventType === EventTypes.DELETE) {
-                        const messageIndex =
-                            this.chatService.chat.messages.findIndex(
-                                (chatMessage) => chatMessage.id === message.id
+                        this.chatService.chat.messages =
+                            this.chatService.chat.messages.filter(
+                                (chatMessage) => chatMessage.id !== message.id
                             );
-                        if (messageIndex === -1) return;
-                        this.chatService.chat.messages.splice(messageIndex, 1);
                     } else if (eventType === EventTypes.TYPING) {
                         if (message.text) {
                             this.chatService.chat.usersTyping.push(

@@ -1,11 +1,11 @@
 <div
-    class="{{ componentClass }} flex flex-j-c flex-a-c"
+    class="{{ componentClass }} flex flex--j-c flex--a-c"
     (click)="handleOutsideClick($event)"
 >
     <div class="modalbox__content">
         <div
-            class="modalbox__exit flex flex-c flex-j-c"
             *ngIf="exitButton"
+            class="modalbox__exit flex flex--c flex--j-c"
             (click)="closeModalBox.emit(false)"
         ></div>
         <ng-content></ng-content>

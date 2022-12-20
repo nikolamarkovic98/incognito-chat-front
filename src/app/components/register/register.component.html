@@ -1,17 +1,34 @@
 <div class="wrapper">
-    <div class="form-group">
-        <h3>Enter username:</h3>
-        <input
-            type="text"
-            placeholder="Username"
-            (keyup.enter)="enterChat()"
-            [(ngModel)]="chatService.username"
-        />
-    </div>
-    <div class="buttons-wrapper">
-        <button class="primary" (click)="enterChat()">Enter Chat</button>
-    </div>
-    <div *ngIf="errorMessage && !loading" class="response-message color-danger">
+    <form (submit)="enterChat()">
+        <div class="form-group">
+            <h3>Enter username <span class="color--danger">*</span></h3>
+            <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                (keyup.enter)="enterChat()"
+                [(ngModel)]="chatService.username"
+            />
+        </div>
+        <div class="form-group">
+            <h3>Enter password</h3>
+            <input
+                type="password"
+                name="password"
+                autocomplete="off"
+                placeholder="Password"
+                (keyup.enter)="enterChat()"
+                [(ngModel)]="password"
+            />
+        </div>
+        <div class="form-group text-align--right">
+            <button class="primary" (click)="enterChat()">Enter Chat</button>
+        </div>
+    </form>
+    <div
+        *ngIf="errorMessage && !loading"
+        class="response-message color--danger"
+    >
         {{ errorMessage }}
     </div>
     <div *ngIf="loading" class="response-message">Loading chat...</div>

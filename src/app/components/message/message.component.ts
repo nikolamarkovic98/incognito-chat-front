@@ -1,12 +1,4 @@
-import {
-    Component,
-    EventEmitter,
-    Input,
-    OnInit,
-    Output,
-    ViewChild,
-    ElementRef,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ChatService } from 'src/app/services/chat.service';
 import { Message } from 'src/app/models/message.model';
 import { environment as env } from '../../../environments/environment';
