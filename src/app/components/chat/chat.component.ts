@@ -46,7 +46,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         public chatService: ChatService,
         public router: Router,
         private socketService: SocketService,
-        private reqs: RequestsService,
+        private requests: RequestsService,
         private route: ActivatedRoute,
         private titleService: Title
     ) {
@@ -118,17 +118,19 @@ export class ChatComponent implements OnInit, OnDestroy {
             this.startConnection();
         } else {
             // fetch chat data
-            this.reqs.getChat(this.chatId).subscribe({
-                next: (chat: IChat) => {
-                    this.chatService.chat = new Chat(chat);
-                    this.titleService.setTitle(
-                        `Incognito Chat - ${this.chatService.chat.name}`
-                    );
-                    this.startConnection();
-                    this.setTypingText();
-                },
-                error: () => this.router.navigate(['/']),
-            });
+            this.requests
+                .getChat(this.chatId, this.chatService.token)
+                .subscribe({
+                    next: (chat: IChat) => {
+                        this.chatService.chat = new Chat(chat);
+                        this.titleService.setTitle(
+                            `Incognito Chat - ${this.chatService.chat.name}`
+                        );
+                        this.startConnection();
+                        this.setTypingText();
+                    },
+                    error: () => this.router.navigate(['/']),
+                });
         }
     }
 
@@ -257,7 +259,8 @@ export class ChatComponent implements OnInit, OnDestroy {
     startConnection(): void {
         this.socketService.initConnection(
             this.chatId,
-            this.chatService.username
+            this.chatService.username,
+            this.chatService.token
         );
         this.scrollDown();
         this.startTimer();
@@ -295,7 +298,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         formData.append('file', image);
 
         // upload file
-        this.reqs.uploadFile(this.chatId, formData).subscribe();
+        this.requests.uploadFile(this.chatId, formData).subscribe();
 
         // reset value of file input
         this.fileRef.nativeElement.value = null;

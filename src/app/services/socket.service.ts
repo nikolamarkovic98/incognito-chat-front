@@ -18,10 +18,15 @@ export class SocketService {
     private socketMessageReceivedSource = new Subject<ISocketMessage>();
     socketMessageReceived = this.socketMessageReceivedSource.asObservable();
 
-    initConnection(chatId: string, username: string) {
+    initConnection(chatId: string, username: string, token: string) {
         if (this.socket) return;
 
         this.socket = new WebSocket(`${this.BASE_URL}/${chatId}/${username}`);
+
+        this.socket.onopen = () => {
+            // when connection is established we send token to server to verify it
+            this.sendMessage(token);
+        };
 
         this.socket.onclose = () => {
             if (!this.socket) return;
@@ -42,7 +47,7 @@ export class SocketService {
         };
     }
 
-    sendMessage(message: ISocketMessage) {
+    sendMessage<T>(message: T) {
         this.socket?.send(JSON.stringify(message));
     }
 }

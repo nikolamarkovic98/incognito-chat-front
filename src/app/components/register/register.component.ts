@@ -1,16 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ChatService } from 'src/app/services/chat.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RequestsService } from 'src/app/services/requests.service';
-import { IRegisterBody } from 'src/app/models/http.models';
+import { IRegisterBody, IRegisterResponse } from 'src/app/models/http.models';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'app-register',
     templateUrl: './register.component.html',
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
     errorTimeout: ReturnType<typeof setTimeout> | null = null;
     errorMessage = '';
     chatId = '';
@@ -18,7 +18,7 @@ export class RegisterComponent implements OnInit {
 
     constructor(
         public chatService: ChatService,
-        private reqs: RequestsService,
+        private requests: RequestsService,
         private router: Router,
         private route: ActivatedRoute,
         private titleService: Title
@@ -27,16 +27,8 @@ export class RegisterComponent implements OnInit {
         if (!this.chatId) {
             this.router.navigate(['/']);
         } else {
+            this.chatService.username = '';
             this.titleService.setTitle('Incognito Chat - Register');
-        }
-    }
-
-    ngOnInit(): void {
-        // check if its valid chat url
-        if (!this.chatService.chat.id) {
-            this.reqs.getChat(this.chatId).subscribe({
-                error: () => this.router.navigate(['/']),
-            });
         }
     }
 
@@ -54,15 +46,16 @@ export class RegisterComponent implements OnInit {
         };
 
         this.loading = true;
-        this.reqs.register(body).subscribe({
-            next: (usernameAlreadyTaken: boolean) => {
-                if (usernameAlreadyTaken) {
+        this.requests.register(body).subscribe({
+            next: (response: IRegisterResponse) => {
+                if (response.isUsernameTaken) {
                     this.loading = false;
                     this.showErrorMessage(
                         `${this.chatService.username} already in use`
                     );
                     this.chatService.username = '';
                 } else {
+                    this.chatService.token = response.token;
                     this.router.navigate([`/chat/${this.chatId}`]);
                 }
             },

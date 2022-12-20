@@ -20,7 +20,7 @@ export class CreateChatComponent {
 
     constructor(
         private chatService: ChatService,
-        private http: RequestsService,
+        private requests: RequestsService,
         private router: Router,
         private titleService: Title
     ) {
@@ -52,7 +52,7 @@ export class CreateChatComponent {
         };
 
         this.loading = true;
-        this.http.createChat(body).subscribe({
+        this.requests.createChat(body).subscribe({
             next: (chat: IChat) => {
                 this.chatService.chat = new Chat(chat);
                 this.router.navigate([`/register/${chat.id}`]);

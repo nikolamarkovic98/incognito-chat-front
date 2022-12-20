@@ -8,3 +8,8 @@ export interface IRegisterBody {
     chatId: string;
     username: string;
 }
+
+export interface IRegisterResponse {
+    isUsernameTaken: boolean;
+    token: string;
+}

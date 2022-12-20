@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+    ViewChild,
+    ElementRef,
+} from '@angular/core';
 import { ChatService } from 'src/app/services/chat.service';
 import { Message } from 'src/app/models/message.model';
 import { environment as env } from '../../../environments/environment';
@@ -22,10 +30,10 @@ export class MessageComponent implements OnInit {
     @Output() handleCopy = new EventEmitter();
     @Output() handleDelete = new EventEmitter();
 
+    touchTimeout: ReturnType<typeof setTimeout> | null = null;
+    model: Message;
     hovered = false;
     settingsClick = false;
-
-    model: Message;
 
     constructor(public chatService: ChatService) {}
 
@@ -40,6 +48,15 @@ export class MessageComponent implements OnInit {
             sentAt: this.sentAt,
             likes: this.likes,
         });
+    }
+
+    handleTouchStart(): void {
+        if (window.innerWidth >= 1024) return;
+        this.touchTimeout = setTimeout(() => this.showSettings(), 500);
+    }
+
+    handleTouchEnd(): void {
+        this.touchTimeout && clearTimeout(this.touchTimeout);
     }
 
     handleMouseLeave(): void {

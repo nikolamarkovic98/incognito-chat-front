@@ -14,6 +14,7 @@ export class ChatService {
     chat: Chat;
     text: string = '';
     username: string = '';
+    token: string = '';
 
     constructor() {
         if (!this.chat) {
