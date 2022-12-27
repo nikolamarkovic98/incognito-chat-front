@@ -67,13 +67,26 @@
         background-color: $color-primary;
         padding: $spacer-1;
 
-        #message-text-input {
+        textarea {
             flex: 1;
+            max-height: 100px;
             padding: $spacer-2;
+            font-family: $font-family-primary;
             background-color: $color-primary;
             border: 1px solid $color-gray;
-            border-radius: $spacer-6 * 2;
-            transition: all 1s;
+            border-radius: 8px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            resize: none;
+            outline: none;
+
+            &::-webkit-scrollbar {
+                // Webkit
+                width: 0;
+                height: 0;
+            }
+            scrollbar-width: none; // Firefox
+            -ms-overflow-style: none; // IE
 
             &::placeholder {
                 color: $color-gray;

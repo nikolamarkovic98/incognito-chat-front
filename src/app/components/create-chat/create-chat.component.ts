@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { RequestsService } from 'src/app/services/requests.service';
@@ -18,6 +18,9 @@ export class CreateChatComponent {
     password = '';
     chatDuration = 10;
     loading = false;
+
+    @ViewChild('textarea')
+    textarea: ElementRef;
 
     constructor(
         private chatService: ChatService,

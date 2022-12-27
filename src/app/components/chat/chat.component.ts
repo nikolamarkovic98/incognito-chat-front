@@ -1,8 +1,9 @@
 import {
     Component,
-    OnInit,
     ElementRef,
     ViewChild,
+    OnInit,
+    AfterViewInit,
     OnDestroy,
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -20,27 +21,29 @@ import { Subscription } from 'rxjs';
     templateUrl: './chat.component.html',
     styleUrls: ['./chat.component.scss'],
 })
-export class ChatComponent implements OnInit, OnDestroy {
+export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild('chatRef')
-    chatRef: ElementRef;
+    chatRef: ElementRef<HTMLDivElement>;
 
     @ViewChild('mainRef')
-    mainRef: ElementRef;
+    mainRef: ElementRef<HTMLDivElement>;
 
     @ViewChild('text')
-    textRef: ElementRef;
+    textRef: ElementRef<HTMLTextAreaElement>;
 
     @ViewChild('file')
-    fileRef: ElementRef;
+    fileRef: ElementRef<HTMLInputElement>;
 
     timeLeft: string = '';
     chatId: string;
-    typing = false;
-    usersTypingMessage = '';
+    typing: boolean = false;
+    usersTypingMessage: string = '';
 
     timer: ReturnType<typeof setInterval> | null = null;
     socketClosedSub: Subscription;
     socketMessageReceivedSub: Subscription;
+
+    shiftDown: boolean = false;
 
     constructor(
         public chatService: ChatService,
@@ -130,6 +133,15 @@ export class ChatComponent implements OnInit, OnDestroy {
                     error: () => this.router.navigate(['/']),
                 });
         }
+
+        // textarea should resize on browser resize so the text fits nice
+        window.addEventListener('resize', () => {
+            this.resizeTextarea();
+        });
+    }
+
+    ngAfterViewInit(): void {
+        this.resizeTextarea();
     }
 
     ngOnDestroy(): void {
@@ -187,9 +199,13 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.chatService.settingsModalBox = false;
     }
 
-    handleTyping(e: Event): void {
-        const target = e.target as HTMLInputElement;
-        this.chatService.text = target.value;
+    handleTyping(e: KeyboardEvent): void {
+        // shift + enter sends message
+        if (e.shiftKey && e.key === 'Enter') {
+            e.preventDefault();
+            this.sendMessage();
+            return;
+        }
 
         if (this.chatService.text) {
             if (this.typing) return;
@@ -287,6 +303,8 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     imageSelected(): void {
         // get image from file input
+        if (!this.fileRef.nativeElement.files) return;
+
         const image = this.fileRef.nativeElement.files[0] as File;
 
         // set FormData
@@ -299,11 +317,12 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.requests.uploadFile(this.chatId, formData).subscribe();
 
         // reset value of file input
-        this.fileRef.nativeElement.value = null;
+        this.fileRef.nativeElement.value = '';
     }
 
     sendMessage(): void {
-        const { value } = this.textRef.nativeElement;
+        // const value = this.textRef.nativeElement.value.trim();
+        const value = this.chatService.text.trim();
         if (!value) return;
 
         // prepare message for sending
@@ -323,6 +342,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.typing = false;
         this.textRef.nativeElement.value = '';
         this.chatService.text = '';
+        this.resizeTextarea();
     }
 
     sendHeart(): void {
@@ -343,5 +363,11 @@ export class ChatComponent implements OnInit, OnDestroy {
             sentAt: new Date().toString(),
             likes: [],
         };
+    }
+
+    resizeTextarea(): void {
+        const target = this.textRef.nativeElement;
+        target.style.height = '0px';
+        target.style.height = target.scrollHeight + 'px';
     }
 }

@@ -44,14 +44,14 @@
         </div>
     </main>
     <footer class="flex flex--a-c">
-        <input
+        <textarea
             #text
-            class="color-light"
-            id="message-text-input"
-            placeholder="Message..."
-            (input)="handleTyping($event)"
-            (keyup.enter)="sendMessage()"
-        />
+            class="color--light"
+            placeholder="Type message..."
+            (keydown)="handleTyping($event)"
+            (input)="resizeTextarea()"
+            [(ngModel)]="chatService.text"
+        ></textarea>
         <div
             [ngStyle]="{ 'max-width': chatService.text ? '0px' : '56px' }"
             class="icons flex flex--a-c"
