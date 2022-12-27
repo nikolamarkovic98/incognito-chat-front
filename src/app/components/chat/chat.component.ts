@@ -176,7 +176,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     handleCopy(message: Message): void {
-        navigator.clipboard.writeText(message.text);
+        window.navigator.clipboard.writeText(message.text);
         this.chatService.settingsModalBox = false;
     }
 
